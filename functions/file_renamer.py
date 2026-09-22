@@ -1,13 +1,20 @@
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+
 import extract_msg
 
 
 def rename_msg_file(filepath):
-    target_dir = Path(filepath)
-    abs_path = target_dir.absolute()
+    """Rename .msg files in the given directory using the date sent in the msg file
 
-    for file in abs_path.iterdir():
+    Args:
+        filepath: str = path to the directory containing .msg files. Needs to be absolute path.
+    Returns:
+        None
+    """
+    target_dir = Path(filepath)
+
+    for file in target_dir.iterdir():
         if file.suffix == ".msg":
             file_name = file.name
             msg = extract_msg.openMsg(file)
@@ -16,6 +23,9 @@ def rename_msg_file(filepath):
             try:
                 formatted_date = date_sent.strftime("%Y-%m-%d")
             except Exception as e:
+                print(f"Error: {e}. Defaulting to None")
                 formatted_date = None
-            print(type(date_sent))
-            print(formatted_date)
+
+            if formatted_date:
+                new_path = target_dir / f"{formatted_date} - {file_name}"
+                file.rename(new_path)

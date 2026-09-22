@@ -7,7 +7,7 @@ from functions.file_renamer import rename_msg_file
 
 def main():
 
-    rename_msg_file("./tests")
+    rename_msg_file("/Users/cmdizon/test_msg_file")
 
 
 
